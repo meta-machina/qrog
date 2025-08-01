@@ -1,1 +1,1 @@
-### Thingking Machine (grok)
+### Thingking Machine (qrog)
