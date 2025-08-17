@@ -16,7 +16,8 @@ machine:
   name: Thingking-Machine
   verb: Thingking
   instructions_file: thingking.txt
-  token: qrog.txt
+  token: qrog
+  server: https://localhost:443
   apiUrl: https://api.groq.com/openai/v1/chat/completions
   fallback_llm: llama-3.3-70b-versatile
 

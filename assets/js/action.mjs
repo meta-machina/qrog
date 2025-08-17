@@ -302,7 +302,7 @@ class MachineApp {
     if (this.settings.llm.token) return true;
     
     try {
-      const tokenResponse = await fetch(`https://localhost/${this.settings.machine.token}`);
+      const tokenResponse = await fetch(this.settings.machine.server + '/token/' + this.settings.machine.token, {mode: "cors"});
       if (!tokenResponse.ok) {
         throw new Error(`Server responded with status: ${tokenResponse.status}`);
       }
@@ -314,9 +314,25 @@ class MachineApp {
       console.log('Token fetched successfully from server.');
       return true;
     } catch (fetchError) {
-      console.error('Token fetch failed:', fetchError.message);
-      showTokenPopup(); // Show pop-up to ask for token
-      return false; // Indicate that we couldn't get a token
+      // Is it because of the debug on the local server?
+      try {
+        const tokenResponse = await fetch('https://localhost:8443/token/' + this.settings.machine.token, {mode: "cors"});
+        if (!tokenResponse.ok) {
+          throw new Error(`Server responded with status: ${tokenResponse.status}`);
+        }
+        const fetchedToken = (await tokenResponse.text()).trim();
+        if (!fetchedToken) {
+          throw new Error("Fetched token is empty.");
+        }
+        this.settings.llm.token = fetchedToken;
+        this.settings.machine.server = 'https://localhost:8443'
+        console.log(`Token fetched successfully from the debug server; server URL updated to ${this.settings.machine.server}`);
+        return true;
+      } catch (fetchError2) {
+        console.error('Token fetch failed:', fetchError.message);
+        showTokenPopup(); // Show pop-up to ask for token
+        return false; // Indicate that we couldn't get a token
+      }
     }
   };
   

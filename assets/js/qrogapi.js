@@ -15,14 +15,14 @@ self.onmessage = async function(event) {
 
     try {
         // --- 2. Fetch instruction ---
-        let instructionText = `The assistant is ${machineConfig.name}.`; // Declare here to ensure it's in scope
+        let instructionText; // Declare here to ensure it's in scope
         try {
-            console.log(`Worker: Fetching the Machine instruction from https://localhost/${machineConfig.instructions_file}`);
-            const instructionResponse = await fetch('https://localhost/' + machineConfig.instructions_file);
+            console.log(`Worker: Fetching the Machine instruction from ${machineConfig.server}`);
+            const instructionResponse = await fetch(machineConfig.server + '/' + machineConfig.instructions_file, {mode: "cors"});
             if (!instructionResponse.ok) {
-                 console.log(`Worker: HTTP error fetching instruction! status: ${instructionResponse.status}. Using default instruction.`);
-                 // Default instruction if fetching fails or file not found
-                 instructionText = "You are a helpful assistant.";
+                console.log(`Worker: HTTP error fetching instruction! status: ${instructionResponse.status}. Using default instruction.`);
+                // Default instruction if fetching fails or file not found
+                instructionText = "You are a helpful assistant.";
             } else {
                 instructionText = (await instructionResponse.text()).trim();
                 console.log('Worker: Instruction fetched successfully.');
