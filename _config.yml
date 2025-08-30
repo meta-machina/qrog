@@ -15,7 +15,7 @@ description: A machine is a thing. Things can not think. ...but some of them can
 machine:
   name: Thingking-Machine
   verb: Thingking
-  instructions_file: thingking.txt
+  instructions_file: thingking.md
   token: qrog
   server: https://localhost:443
   apiUrl: https://api.groq.com/openai/v1/chat/completions
