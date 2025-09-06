@@ -25,7 +25,7 @@ app:
   worker_name: qrogapi.js
 
 lm:
-  model: moonshotai/kimi-k2-instruct
+  model: moonshotai/kimi-k2-instruct-0905
   max_completion_tokens: 16384
   presence_penalty: 0.0
   temperature: 1.0
